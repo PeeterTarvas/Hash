@@ -10,8 +10,8 @@ public class Hasher {
     private String prevHash;
     private List<String> nonss;
     private List<String> alphanumerics;
-    private Integer alphanumericIndex;
-    private Integer nonssIndex;
+    private List<String> alphanumericsZeros;
+
     private Integer bestZeroes = 0;
 
     public Hasher() {
@@ -19,23 +19,36 @@ public class Hasher {
         this.prevHash = "b94330354c8c6bf787f5d75c0d2f16bcfb663e4433692be7165283d4fd954183aa812ecbc5334c47273892d6dbaf1c5479312bd9c34c5af3e8dd461134de32cloudflow";
         this.nonss = new ArrayList<>(List.of("10000000000000000000000000000000".split("")));
         this.alphanumerics = List.of("123456789abcdefghijklmnopqrstuvwxyz".split(""));
-
-        this.alphanumericIndex = 0;
-        this.nonssIndex = 0;
-
+        this.alphanumericsZeros = List.of("0123456789abcdefghijklmnopqrstuvwxyz".split(""));
     }
 
     public String genNonsse() {
-        String alphanumeric = this.alphanumerics.get(alphanumericIndex);
-        this.alphanumericIndex++;
-        if (this.alphanumericIndex == 35) {
-            this.alphanumericIndex%=35;
-            this.nonssIndex++;
+        // chose a Character random from this String
+        // create StringBuffer size of AlphaNumericString
+        StringBuilder sb = new StringBuilder(32);
 
+        for (int i = 0; i < 32; i++) {
+
+            // generate a random number between
+            // 0 to AlphaNumericString variable length
+            if (i == 0) {
+                int index
+                    = (int)(this.alphanumerics.size()
+                    * Math.random());
+
+                 // add Character one by one in end of sb
+                sb.append(this.alphanumerics.get(index));
+            } else {
+                int index
+                        = (int)(this.alphanumericsZeros.size()
+                        * Math.random());
+
+                // add Character one by one in end of sb
+                sb.append(this.alphanumericsZeros.get(index));
+            }
         }
-        this.alphanumericIndex %= 36;
-        this.nonss.set(nonssIndex, alphanumeric);
-        return this.nonss.toString();
+
+        return sb.toString();
     }
 
     public Integer getLeadingZeroesCount(String hash) {
@@ -60,9 +73,8 @@ public class Hasher {
 
     public static void main(String[] args) {
         Hasher h = new Hasher();
-        String hash = h.generateHash(String.valueOf(h.nonss));
         while (true) {
-            System.out.println(h.genNonsse());
+            System.out.println(h.generateHash(h.genNonsse()));
         }
     }
 
