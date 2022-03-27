@@ -11,8 +11,8 @@ public class Hasher {
     private List<String> nonss;
     private List<String> alphanumerics;
     private List<String> alphanumericsZeros;
-
     private Integer bestZeroes = 0;
+    private StringBuilder sb;
 
     public Hasher() {
         this.name = "cloudflow";
@@ -20,12 +20,16 @@ public class Hasher {
         this.nonss = new ArrayList<>(List.of("10000000000000000000000000000000".split("")));
         this.alphanumerics = List.of("123456789abcdefghijklmnopqrstuvwxyz".split(""));
         this.alphanumericsZeros = List.of("0123456789abcdefghijklmnopqrstuvwxyz".split(""));
+        this.sb = new StringBuilder(32);
+    }
+
+    public void clearSb() {
+        this.sb.delete(0, this.sb.length());
     }
 
     public String genNonsse() {
         // chose a Character random from this String
         // create StringBuffer size of AlphaNumericString
-        StringBuilder sb = new StringBuilder(32);
 
         for (int i = 0; i < 32; i++) {
 
@@ -47,7 +51,6 @@ public class Hasher {
                 sb.append(this.alphanumericsZeros.get(index));
             }
         }
-
         return sb.toString();
     }
 
@@ -75,6 +78,8 @@ public class Hasher {
         Hasher h = new Hasher();
         while (true) {
             System.out.println(h.generateHash(h.genNonsse()));
+            h.clearSb();
+
         }
     }
 
