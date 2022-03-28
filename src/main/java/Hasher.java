@@ -1,5 +1,9 @@
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -71,16 +75,41 @@ public class Hasher {
         String s = prevHash +
                 nonss;
         return encryptThisString(s);
+    }
+
+    public void write(String input) {
+        String path = "src/main/resources/output.txt";
+        try (BufferedWriter writer = Files.newBufferedWriter(Path.of(path))) {
+            writer.write(input);
+            writer.newLine();
+        } catch (IOException e) {
+            System.out.println("IOException:" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void run() {
+        int maxZeroes = 0;
+        while (true) {
+
+            String nonsse = genNonsse();
+            String hash = generateHash(nonsse);
+            int zeroes = getLeadingZeroesCount(hash);
+            if (zeroes > maxZeroes) {
+                maxZeroes = zeroes;
+                write(nonsse + ' ' + hash);
+            }
+            System.out.println(hash);
+
+
+        }
 
     }
 
     public static void main(String[] args) {
         Hasher h = new Hasher();
-        while (true) {
-            System.out.println(h.generateHash(h.genNonsse()));
-            h.clearSb();
+        h.run();
 
-        }
     }
 
     public static String encryptThisString(String input) {
