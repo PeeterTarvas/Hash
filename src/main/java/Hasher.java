@@ -80,7 +80,7 @@ public class Hasher {
     public void write(String input) {
         String path = "src/main/resources/output.txt";
         try (BufferedWriter writer = Files.newBufferedWriter(Path.of(path))) {
-            writer.write(input);
+            writer.append(input);
             writer.newLine();
         } catch (IOException e) {
             System.out.println("IOException:" + e.getMessage());
@@ -98,8 +98,9 @@ public class Hasher {
             if (zeroes > maxZeroes) {
                 maxZeroes = zeroes;
                 write(nonsse + ' ' + hash);
+                System.out.println(nonsse + ' ' + hash);
             }
-            System.out.println(hash);
+            clearSb();
 
 
         }
@@ -126,15 +127,15 @@ public class Hasher {
             BigInteger no = new BigInteger(1, messageDigest);
 
             // Convert message digest into hex value
-            String hashtext = no.toString(16);
+            StringBuilder hashtext = new StringBuilder(no.toString(16));
+
 
             // Add preceding 0s to make it 32 bit
-            while (hashtext.length() < 32) {
-                hashtext = "0" + hashtext;
+            while (hashtext.length() < 126) {
+                hashtext.insert(0, "0");
             }
-
             // return the HashText
-            return hashtext;
+            return hashtext.toString();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
