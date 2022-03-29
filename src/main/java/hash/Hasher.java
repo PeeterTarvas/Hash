@@ -66,7 +66,7 @@ public class Hasher {
                 highest = c;
                 System.out.println("there are " + c + " zeros! The result is: " + result + " and nonce is: " + nonce);
             }
-
+    //cce64343323b38fca428e96c990b44ad
         }
     }
 }
