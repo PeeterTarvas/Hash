@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Hasher {
+public class Hasher extends Thread {
     private String name;
     private String prevHash;
     private List<String> nonss;
@@ -29,7 +29,7 @@ public class Hasher {
     }
 
 
-    private static String getRandomHexString() {
+    private String getRandomHexString() {
         Random r = new Random();
         StringBuffer sb = new StringBuffer();
         while (sb.length() < 32) {
@@ -39,7 +39,7 @@ public class Hasher {
         return sb.toString().substring(0, 32);
     }
 
-    private static String getSHA(String str) throws NoSuchAlgorithmException {
+    public String getSHA(String str) throws NoSuchAlgorithmException {
         String s1 = str;
         MessageDigest msg = MessageDigest.getInstance("SHA-512");
         byte[] hash = msg.digest(s1.getBytes(StandardCharsets.UTF_8));
@@ -51,22 +51,38 @@ public class Hasher {
         return s.toString();
     }
 
-    public static void main(String[] args) throws NoSuchAlgorithmException {
+    public void run() {
         char zero = "0".charAt(0);
         int highest = 0;
         while (true) {
             String nonce = getRandomHexString();
             StringBuilder abc = new StringBuilder().append("b94330354c8c6bf787f5d75c0d2f16bcfb663e4433692be7165283d4fd954183aa812ecbc5334c47273892d6dbaf1c5479312bd9c34c5af3e8dd461134de32cloudflow").append(nonce);
-            String result = getSHA(abc.toString());
+            String result = null;
+            try {
+                result = getSHA(abc.toString());
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
             int c = 0;
             while (result.charAt(c) == zero) {
                 c += 1;
             }
             if (c >= highest) {
                 highest = c;
-                System.out.println("there are " + c + " zeros! The result is: " + result + " and nonce is: " + nonce);
+                //System.out.println("there are " + c + " zeros! The result is: " + result + " and nonce is: " + nonce);
             }
-    //cce64343323b38fca428e96c990b44ad
+            //cce64343323b38fca428e96c990b44ad
         }
     }
+
+        public static void main(String[] args) throws NoSuchAlgorithmException {
+            int n = 4; // Number of threads
+            for (int i = 0; i < n; i++) {
+                Hasher object
+                        = new Hasher();
+                object.run();
+            }
+
+    }
 }
+
