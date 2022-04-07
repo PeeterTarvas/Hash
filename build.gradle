@@ -5,7 +5,7 @@ plugins {
 jar {
     manifest {
         attributes(
-                'Main-Class': 'hash.Hasher'
+                'Main-Class': 'hash.Multithread'
         )
     }
 }
@@ -25,3 +25,4 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+

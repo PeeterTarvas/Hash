@@ -23,9 +23,7 @@ public class Hasher extends Thread {
 
     public Hasher() {
         this.prevHash = "b94330354c8c6bf787f5d75c0d2f16bcfb663e4433692be7165283d4fd954183aa812ecbc5334c47273892d6dbaf1c5479312bd9c34c5af3e8dd461134de32cloudflow";
-        this.nonss = new ArrayList<>(List.of("10000000000000000000000000000000".split("")));
-        this.alphanumerics = List.of("123456789abcdefghijklmnopqrstuvwxyz".split(""));
-        this.alphanumericsZeros = List.of("0123456789abcdefghijklmnopqrstuvwxyz".split(""));
+
     }
 
 
@@ -67,11 +65,12 @@ public class Hasher extends Thread {
             while (result.charAt(c) == zero) {
                 c += 1;
             }
-            if (c >= highest) {
+            if (c > highest) {
                 highest = c;
-                //System.out.println("there are " + c + " zeros! The result is: " + result + " and nonce is: " + nonce);
+                System.out.println("there are " + c + " zeros! The result is: " + result + " and nonce is: " + nonce);
             }
-            //cce64343323b38fca428e96c990b44ad
+
+            // d2be8b11dc86a19c9fbcf7f669655c74
         }
     }
 
@@ -80,7 +79,7 @@ public class Hasher extends Thread {
             for (int i = 0; i < n; i++) {
                 Hasher object
                         = new Hasher();
-                object.run();
+                object.start();
             }
 
     }
